@@ -1,0 +1,28 @@
+# /node_modules
+# /backend/config/config.env
+# /frontend/node_modules
+# /frontend/.pnp
+# /frontend/.pnp.js
+
+# /frontend/coverage
+
+# /frontend/build
+# /flask backend
+# /frontend/.DS_Store
+# /frontend/.env.local
+# /frontend/.env.development.local
+# /frontend/.env.test.local
+# /frontend/.env.production.local
+
+# Node modules and environment
+/node_modules
+.env
+
+# Ignore logs and temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+.DS_Store

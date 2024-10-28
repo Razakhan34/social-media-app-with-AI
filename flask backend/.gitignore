@@ -1,0 +1,13 @@
+# Ignore virtual environments and caches
+myenv/
+__pycache__/
+
+# Ignore environment files (if storing credentials here)
+*.env
+
+# Ignore model checkpoint if too large or sensitive
+model/*.h5
+model/*.pkl
+
+# Ignore system files
+*.DS_Store

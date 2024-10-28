@@ -1,0 +1,218 @@
+.post {
+  width: 60%;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 0 1vmax 2vmax;
+  margin: 2vmax;
+}
+.postHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1vmax;
+}
+.postHeader > button {
+  border-radius: 100%;
+  color: rgba(0, 0, 0, 0.582);
+}
+.user-name-image-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 10px;
+  gap: 2px;
+}
+.user-name-image-container a {
+  text-decoration: none;
+  color: black;
+}
+.user-name-image-container a p {
+  font-size: 18px;
+  font-weight: normal;
+}
+
+.user-name-image-container p {
+  font-size: 12px;
+}
+.post > img {
+  width: 100%;
+}
+.postDetails {
+  display: flex;
+  padding: 1vmax 0px;
+  align-items: center;
+  /* justify-content: center; */
+}
+.postDetails > a {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  margin: 1vmax;
+}
+.postFooter > button {
+  color: rgba(0, 0, 0, 0.767);
+  margin: 0 1vmax;
+  border-radius: 100%;
+  transition: all 0.3s;
+}
+.postFooter > button:hover {
+  transform: translateY(-4px);
+}
+.postFooter > button > svg {
+  font-size: 1.7vmax;
+}
+.DialogBox {
+  min-width: 500px;
+  height: 100vh;
+  padding: 2vmax;
+}
+
+.comments-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+/* Styles for comment form */
+.comment-form {
+  margin-bottom: 20px;
+}
+.comment-form form {
+  display: flex;
+  flex-direction: column;
+}
+.comment-form textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  resize: none;
+}
+.comment-form .submit-button {
+  width: 120px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.comment-form .submit-button:hover {
+  background-color: #0056b3;
+}
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+.comment:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.comment-details {
+  flex: 1;
+}
+
+.name-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+
+.comment-text {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.edit-btn {
+  display: inline-block;
+  margin-right: 15px;
+}
+.delete-btn {
+  background-color: #dc3545;
+}
+.edit-btn:hover,
+.delete-btn:hover {
+  background-color: #218838;
+}
+
+.comment-form {
+  position: relative;
+}
+
+.textarea-container {
+  position: relative;
+}
+
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.generate-button {
+  position: absolute;
+  bottom: 26px;
+  right: 20px;
+  background: none;
+  color: blue;
+  border: none;
+  padding: 4px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.generate-button.disabled {
+  color: gray;
+  cursor: not-allowed;
+}
+@media screen and (max-width: 600px) {
+  .post {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.068);
+    padding: 0 0 4vw;
+    margin: 0;
+  }
+  .postFooter > button > svg {
+    font-size: 8vw;
+  }
+}
