@@ -3,6 +3,8 @@ import useConversation from "./../zhustand/useConversation";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
+import configuration from "../config/configuration";
+
 const useGetEmotionMessage = () => {
   const [loading, setLoading] = useState(false);
   const { messages, setMessages, selectedConversation } = useConversation();
@@ -15,7 +17,7 @@ const useGetEmotionMessage = () => {
       const receiverId = selectedConversation._id;
       console.log(senderId, receiverId);
       const res = await fetch(
-        `http://127.0.0.1:8000/send_emotion_message/${receiverId}`,
+        `${configuration.flaskBaseUrl}/send_emotion_message/${receiverId}`,
         {
           method: "POST",
           headers: {
@@ -32,7 +34,6 @@ const useGetEmotionMessage = () => {
       const newMessage = JSON.parse(data.newMessage);
       setMessages([...messages, newMessage]);
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
     } finally {
       setLoading(false);

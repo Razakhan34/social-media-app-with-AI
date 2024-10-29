@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 // ./App.scss';;
 // const SERVER = "http://127.0.0.1:8080";
 
+import configuration from "../config/configuration";
+
 const SocketContext = createContext();
 
 export const useSocketContext = () => {
@@ -17,11 +19,11 @@ export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [socketFlask, setSocketFlask] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const { error, loading, user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     if (user) {
-      const socket = io("http://127.0.0.1:5000", {
+      const socket = io(`${configuration.apiBaseUrl}`, {
         query: {
           userId: user._id,
         },
@@ -30,13 +32,12 @@ export const SocketContextProvider = ({ children }) => {
       setSocket(socket);
 
       // Connect to Flask server
-      const socketFlask = io("http://127.0.0.1:8000", {
+      const socketFlask = io(`${configuration.flaskBaseUrl}`, {
         query: {
           userId: user._id,
         },
       });
       setSocketFlask(socketFlask);
-      console.log("Connected From Frontend " + socketFlask);
 
       // socket.on() is used to listen to the events. can be used both on client and server side
       socket.on("getOnlineUsers", (users) => {

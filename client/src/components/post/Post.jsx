@@ -35,6 +35,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import useConversation from "../../zhustand/useConversation.js";
 
+import configuration from "../../config/configuration.js";
+
 const Post = ({
   postId,
   caption,
@@ -117,7 +119,7 @@ const Post = ({
       setEmotionLoading(true);
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/emotion_detect"
+          `${configuration.flaskBaseUrl}/emotion_detect`
         );
         // setEmotions(response.data.emotions);
         const emotions = response.data.emotions;

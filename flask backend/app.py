@@ -16,13 +16,18 @@ from flask_socketio import SocketIO
 from flask_socketio import emit
 from bson import json_util
 from PredictingEmotion import PredictingEmotion
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from utils import CustomJSONEncoder, upload_to_cloudinary, detect_user_image
 
 app = Flask(__name__)
 CORS(app)
 
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+socketio = SocketIO(app, cors_allowed_origins=os.getenv('FRONTEND_URL'))
 
 app.json_encoder = CustomJSONEncoder
 
@@ -45,16 +50,16 @@ def emotion_detect():
 
 #starting the code of detecting user face and emotion while chatting
 # Configure MongoDB client
-client = MongoClient('mongodb+srv://razak_8693:mongoDB$$razakhan@cluster0.mpok0.mongodb.net/socialmedia?retryWrites=true&w=majority')
+client = MongoClient(os.getenv('MONGODB_URI'))
 db = client['socialmedia']
 collection_conversations = db['conversations']
 collection_messages = db['messages']
 
 #define function to take image from user and send to chat
 cloudinary.config(
-    cloud_name='dkde7wrfc',
-    api_key='221546991454137',
-    api_secret='KpdFx2fAthOmFI1zdFGhcyUb0oI')
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET'))
 
 # defining message class and save method
 class Message:
@@ -197,4 +202,6 @@ def send_message(receiver_id):
 # testing_prediction()
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    # Use the port provided by Render or default to 8000 for local testing
+    port = int(os.environ.get('PORT', 8000))
+    app.run(debug=True, host='0.0.0.0', port=port)

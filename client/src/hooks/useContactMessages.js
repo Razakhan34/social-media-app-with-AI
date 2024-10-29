@@ -7,8 +7,6 @@ const useContactMessages = (reciverId) => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
 
-  console.log(reciverId);
-
   useEffect(() => {
     const getMessages = async () => {
       setLoading(true);

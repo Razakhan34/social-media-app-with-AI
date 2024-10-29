@@ -1,5 +1,5 @@
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -199,7 +199,7 @@ const UserProfile = () => {
               ))
             ) : (
               <Typography style={{ margin: "2vmax" }}>
-                You're not following anyone
+                You are not following anyone
               </Typography>
             )}
           </div>

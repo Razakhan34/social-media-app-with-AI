@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link, useParams } from "react-router-dom";
 import "./CommentCard.css";
 import { useDispatch, useSelector } from "react-redux";
