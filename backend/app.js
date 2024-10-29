@@ -12,7 +12,7 @@ const cors = require("cors");
 const { app, server } = require("./utility/socket");
 
 const corsOptions = {
-  origin: "http://localhost:5173", // Set this to the exact frontend origin
+  origin: process.env.frontend_url, // Set this to the exact frontend origin
   credentials: true, // Allow credentials (cookies, authorization headers, TLS client certificates)
 };
 app.use(cors(corsOptions));
