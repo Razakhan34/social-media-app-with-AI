@@ -1,5 +1,5 @@
 # Ignore virtual environments and caches
-myenv/
+myvenv/
 __pycache__/
 
 # Ignore environment files (if storing credentials here)
