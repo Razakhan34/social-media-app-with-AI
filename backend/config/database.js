@@ -6,9 +6,11 @@ module.exports = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log(
-      `Mongodb connected successfully on host : ${connect.connection.host}`
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.log(
+        `Mongodb connected successfully on host : ${connect.connection.host}`
+      );
+    }
   } catch (error) {
     console.log(`Error occured in database ${error.message}`);
     process.exit(1);

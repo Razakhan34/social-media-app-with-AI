@@ -39,9 +39,18 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/messages", messageRouter);
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// app.use(express.static(path.join(__dirname, "../frontend/build")));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+// });
+
+// if the url doesn't match
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
+  res.status(404).json({
+    error: "Page not found",
+    code: 404,
+  });
 });
 
 module.exports = app;
