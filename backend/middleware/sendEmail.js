@@ -11,7 +11,7 @@ exports.sendEmail = async (options) => {
   });
 
   const mailOptions = {
-    from: `NetworkHub <${process.env.EMAIL_USERNAME}>`,
+    from: `RSocial-hub <${process.env.EMAIL_USERNAME}>`,
     to: options.email,
     subject: options.subject,
     text: options.message,

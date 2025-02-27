@@ -1,6 +1,4 @@
 from flask import Flask,request, jsonify
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array
 import cv2
 import numpy as np
 from time import time
@@ -18,7 +16,6 @@ from bson import json_util
 from PredictingEmotion import PredictingEmotion
 import os
 from dotenv import load_dotenv
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -117,7 +114,6 @@ def send_message(receiver_id):
         senderId = request.json.get('senderId')
         # take images and Upload images to Cloudinary
         cloudinary_response = detect_user_image()
-        
         results = emotion_predictor.detect_emotions_from_image('temp_image.jpg')
         print(results)
         if results:
