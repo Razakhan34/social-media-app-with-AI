@@ -34,6 +34,13 @@ const MainChat = () => {
     });
   };
 
+  const removeImageHandler = (indexToRemove) => {
+    setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
+    setImagesPreview((prev) =>
+      prev.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
   const cleanChatImageHandler = () => {
     setImages([]);
     setImagesPreview([]);
@@ -55,7 +62,10 @@ const MainChat = () => {
           <CurrentUserHeader selectedUserInfo={selectedConversation} />
           <Messages onEmotionPermission={emotionPermissionHandler} />
           {imagesPreview.length > 0 && (
-            <ImageUploadPreview imagesPreview={imagesPreview} />
+            <ImageUploadPreview
+              imagesPreview={imagesPreview}
+              onRemoveImage={removeImageHandler}
+            />
           )}
           <SendMessage
             images={images}

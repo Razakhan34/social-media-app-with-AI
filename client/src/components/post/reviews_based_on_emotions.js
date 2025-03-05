@@ -43,7 +43,6 @@ const review_based_on_emotion = {
     "Interesting composition in this photo.",
     "This picture offers a unique perspective.",
     "A curious detail captured in this image.",
-
     "A moment of quiet observation in this picture.",
   ],
   sad: [
