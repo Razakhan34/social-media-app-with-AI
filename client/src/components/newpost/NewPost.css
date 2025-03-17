@@ -72,3 +72,32 @@
     width: 70%;
   }
 }
+
+.captionInputContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* adds space between input and button */
+}
+
+.captionInputContainer input {
+  flex: 1; /* make the input take available width */
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  width: 500px;
+}
+.generate-caption-link {
+  color: #1976d2; /* MUI primary color or any you like */
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.generate-caption-link:hover {
+  color: #004ba0; /* Darker shade on hover */
+}
+.caption_input:active {
+  border: none;
+  outline: none;
+}

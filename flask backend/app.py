@@ -16,6 +16,7 @@ from bson import json_util
 from PredictingEmotion import PredictingEmotion
 import os
 from dotenv import load_dotenv
+from caption_generator import generate_caption,generate_caption_with_LLM_BARD
 # Load environment variables from .env file
 load_dotenv()
 
@@ -196,6 +197,40 @@ def send_message(receiver_id):
     # # Delete temporary image file
     # os.remove('temp_image.jpg')
 # testing_prediction()
+
+from PIL import Image
+import io
+@app.route('/generate-caption/upload', methods=['POST'])
+def upload():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image part in the request"}), 400
+    
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    try:
+        image_bytes = file.read()
+        img = Image.open(io.BytesIO(image_bytes))
+        saved_image_path = os.path.join("./", file.filename)
+        img.save(saved_image_path)
+        
+        # After saving or reading the image...
+        # caption = generate_caption(img)  # Your model function
+        # Generate caption using BLIP model
+        caption = generate_caption(saved_image_path)
+
+        if caption is None:
+            return jsonify({"error": "Failed to generate caption"}), 500
+
+        # Send the caption back to frontend
+        final_caption = generate_caption_with_LLM_BARD(caption)
+        return jsonify({"caption": final_caption}), 200
+
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     # Use the port provided by Render or default to 8000 for local testing

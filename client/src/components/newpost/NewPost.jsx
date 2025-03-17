@@ -10,6 +10,8 @@ import {
 import { userLoad } from "../../store/actions/userActions";
 
 import "./NewPost.css";
+import axios from "axios";
+import configuration from "../../config/configuration";
 
 const NewPost = () => {
   const dispatch = useDispatch();
@@ -17,9 +19,11 @@ const NewPost = () => {
 
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState("");
+  const [captionImage, setCaptionImage] = useState("");
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    setCaptionImage(file);
 
     const Reader = new FileReader();
     Reader.readAsDataURL(file);
@@ -29,6 +33,28 @@ const NewPost = () => {
         setImage(Reader.result);
       }
     };
+  };
+
+  const handleGenerateCaption = async () => {
+    // Example logic - replace with your API or logic to generate captions
+    const formData = new FormData();
+    formData.append("image", captionImage);
+    try {
+      const response = await axios.post(
+        `${configuration.flaskBaseUrl}/generate-caption/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setCaption(response.data.caption);
+      console.log("Response:", response.data);
+      // alert("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
   };
 
   const submitHandler = async (e) => {
@@ -52,15 +78,23 @@ const NewPost = () => {
     <div className="newPost">
       <form className="newPostForm" onSubmit={submitHandler}>
         <Typography variant="h3">New Post</Typography>
-
         {image && <img src={image} alt="post" />}
         <input type="file" accept="image/*" onChange={handleImageChange} />
-        <input
-          type="text"
-          placeholder="Caption..."
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-        />
+        <div className="captionInputContainer">
+          <input
+            type="text"
+            className="caption_input"
+            placeholder="Caption..."
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+          />
+          <span
+            className="generate-caption-link"
+            onClick={handleGenerateCaption}
+          >
+            Generate Caption
+          </span>
+        </div>
         <Button disabled={loading} type="submit">
           Post
         </Button>
