@@ -50,7 +50,7 @@ import google.generativeai as genai # type: ignore
 
 def generate_caption_with_LLM_BARD(input_caption):
   # Configure API key from Google AI Studio
-  genai.configure(api_key="AIzaSyDBEAWEN7-6fbArFJnIFpFBYIJX47HctxI")
+  genai.configure(api_key=os.getenv('google_api_key_for_llm'))
   # for m in genai.list_models():
   #     print(m.name)
 
