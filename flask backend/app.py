@@ -228,7 +228,6 @@ def upload():
         final_caption = generate_caption_with_LLM_BARD(caption)
         return jsonify({"caption": final_caption}), 200
 
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

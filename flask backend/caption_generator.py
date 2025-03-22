@@ -5,7 +5,7 @@ import os
 
 # Step 1: Setup device (GPU if available)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"✅ Using device: {device}")
+# print(f"✅ Using device: {device}")
 
 # Step 2: Load the processor and model from local directory
 BASE_DIR = os.getcwd()  # current working directory
