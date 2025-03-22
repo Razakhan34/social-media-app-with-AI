@@ -79,25 +79,96 @@
   gap: 10px; /* adds space between input and button */
 }
 
-.captionInputContainer input {
-  flex: 1; /* make the input take available width */
-  padding: 10px;
+/* caption textarea stylish */
+.caption_textarea {
+  flex: 1;
   font-size: 16px;
-  border: none;
   width: 500px;
+  height: 150px; /* Adjust height as needed */
+  resize: none; /* Prevent manual resize if you don't want it */
+
+  /* Remove border and outline */
+  border: none;
+  outline: none;
+
+  /* Optional styling */
+  padding: 12px;
+  font-size: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+
+  /* Scrollbar behavior */
+  overflow-y: auto; /* Only show vertical scrollbar when necessary */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+
+  /* Optional: smooth scrolling inside */
+  scroll-behavior: smooth;
 }
+
+/* Optional: Custom scrollbar styling for WebKit browsers */
+.caption_textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.caption_textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.caption_textarea::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
 .generate-caption-link {
   color: #1976d2; /* MUI primary color or any you like */
   cursor: pointer;
   text-decoration: underline;
-  font-size: 14px;
+  font-size: 16px;
   margin-left: 10px;
 }
 
 .generate-caption-link:hover {
   color: #004ba0; /* Darker shade on hover */
 }
-.caption_input:active {
-  border: none;
-  outline: none;
+
+.loading-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #1976d2;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: inline-flex;
+  align-items: center;
+}
+
+.dots {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.dots::after {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  text-align: left;
+  animation: dots-animation 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots-animation {
+  0% {
+    content: "";
+  }
+  25% {
+    content: "..";
+  }
+  50% {
+    content: "....";
+  }
+  75% {
+    content: ".....";
+  }
+  100% {
+    content: "";
+  }
 }

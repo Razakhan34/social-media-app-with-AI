@@ -20,6 +20,7 @@ const NewPost = () => {
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState("");
   const [captionImage, setCaptionImage] = useState("");
+  const [isCaptionLoading, setCaptionLoading] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -39,6 +40,7 @@ const NewPost = () => {
     // Example logic - replace with your API or logic to generate captions
     const formData = new FormData();
     formData.append("image", captionImage);
+    setCaptionLoading(true);
     try {
       const response = await axios.post(
         `${configuration.flaskBaseUrl}/generate-caption/upload`,
@@ -51,8 +53,10 @@ const NewPost = () => {
       );
       setCaption(response.data.caption);
       console.log("Response:", response.data);
+      setCaptionLoading(false);
       // alert("Image uploaded successfully!");
     } catch (error) {
+      setCaptionLoading(false);
       console.error("Error uploading image:", error);
     }
   };
@@ -81,19 +85,28 @@ const NewPost = () => {
         {image && <img src={image} alt="post" />}
         <input type="file" accept="image/*" onChange={handleImageChange} />
         <div className="captionInputContainer">
-          <input
-            type="text"
-            className="caption_input"
+          <textarea
+            name=""
+            id=""
+            className="caption_textarea"
             placeholder="Caption..."
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
-          />
-          <span
-            className="generate-caption-link"
-            onClick={handleGenerateCaption}
-          >
-            Generate Caption
-          </span>
+          ></textarea>
+
+          {isCaptionLoading && (
+            <span className="loading-text">
+              Generating<span className="dots">...</span>
+            </span>
+          )}
+          {!isCaptionLoading && (
+            <span
+              className="generate-caption-link"
+              onClick={handleGenerateCaption}
+            >
+              Generate Caption
+            </span>
+          )}
         </div>
         <Button disabled={loading} type="submit">
           Post
