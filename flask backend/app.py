@@ -33,20 +33,21 @@ app.json_encoder = CustomJSONEncoder
 emotion_predictor = PredictingEmotion()
 
 # Define API endpoint
-@app.route('/emotion_detect', methods=['GET'])
-def emotion_detect():
-    # Detect emotions
-    results = emotion_predictor.detect_emotions()
-    print(results)
-    # Return JSON response
-    if results:
-        response = {"emotions": results}
-    else:
-        response = {"emotions": ["happy"]}  # Default to happy if no emotions detected
-    print(response)
-    return jsonify(response)
+# @app.route('/emotion_detect', methods=['GET'])
+# def emotion_detect():
+#     # Detect emotions
+#     results = emotion_predictor.detect_emotions()
+#     print(results)
+#     # Return JSON response
+#     if results:
+#         response = {"emotions": results}
+#     else:
+#         response = {"emotions": ["happy"]}  # Default to happy if no emotions detected
+#     print(response)
+#     return jsonify(response)
 
 #starting the code of detecting user face and emotion while chatting
+# start here
 # Configure MongoDB client
 client = MongoClient(os.getenv('MONGODB_URI'))
 db = client['socialmedia']
@@ -186,6 +187,8 @@ def send_message(receiver_id):
         print("Error in send_message controller:", e)
         return jsonify({'success': False, 'error': 'Internal server error'}), 500
 
+# end here chat feature (detecting user face and emotion while chatting)
+
 #just for testing purpose
 # def testing_prediction():
     # camera = cv2.VideoCapture(0)
@@ -200,7 +203,7 @@ def send_message(receiver_id):
 
 from PIL import Image
 import io
-@app.route('/generate-caption/upload', methods=['POST'])
+# @app.route('/generate-caption/upload', methods=['POST'])
 def upload():
     if 'image' not in request.files:
         return jsonify({"error": "No image part in the request"}), 400
@@ -223,14 +226,59 @@ def upload():
 
         if caption is None:
             return jsonify({"error": "Failed to generate caption"}), 500
+        
+        prompt = (
+        f"Write a creative and engaging social media caption based on the description: "
+        f"'{caption}'. The caption should be fun, catchy, and within two lines."
+        )
 
         # Send the caption back to frontend
-        final_caption = generate_caption_with_LLM_BARD(caption)
+        final_caption = generate_caption_with_LLM_BARD(prompt)
         return jsonify({"caption": final_caption}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+
+
+# generating auto comment based on user emotion and current user background or scenario
+from comment_generator import generate_comment
+@app.route('/generate-comment/upload', methods=['POST'])
+def generate_comment_llm():
+    if 'image' not in request.files:
+        return jsonify({"error": "No image part in the request"}), 400
+
+    file = request.files['image']
+
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    # Debug: Print file info
+    print("Received file:", file.filename, file.content_type)
+    try:
+    # Read the image data
+        image_bytes = file.read()
+        # Open the image using PIL
+        img = Image.open(io.BytesIO(image_bytes))
+        print("Image opened:", img.format, img.size)
+        
+        # Define a directory to save the image (ensure it exists)
+        save_directory = "./uploads"
+        os.makedirs(save_directory, exist_ok=True)
+        saved_image_path = os.path.join(save_directory, file.filename)
+        
+        # Save the image
+        img.save(saved_image_path)
+        print("Image saved at:", saved_image_path)
+        
+        caption_temp = generate_comment(saved_image_path) 
+        
+        # For now, return a dummy response
+        return jsonify({"suggested_comment": caption_temp}), 200     
+
+    except Exception as e:
+        print("Error saving image:", e)
+        return jsonify({"error": str(e)}), 500
 if __name__ == '__main__':
     # Use the port provided by Render or default to 8000 for local testing
     port = int(os.environ.get('PORT', 8000))

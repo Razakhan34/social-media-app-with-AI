@@ -11,7 +11,7 @@ import {
 
 import ChatIcon from "@mui/icons-material/Chat";
 
-import reviews_on_emotions from "./reviews_based_on_emotions.js";
+// import reviews_on_emotions from "./reviews_based_on_emotions.js";
 
 import "./Post.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -115,19 +115,32 @@ const Post = ({
     }
   }, [navigate, selectedConversation]);
   useEffect(() => {
+    // since we are getting postImage as a url so we need to in blob to send image in flask
+    async function urlToBlob(url) {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      return blob;
+    }
     const fetchData = async () => {
       setEmotionLoading(true);
       try {
-        const response = await axios.get(
-          `${configuration.flaskBaseUrl}/emotion_detect`
+        // calling api to flask where it will capture user image who is goiong to
+        // give comment and analyze his emotion about image
+        const blob = await urlToBlob(postImage); // postImage is the URL from post.image.url
+        const formData = new FormData();
+        formData.append("image", blob, "uploaded_image.jpg");
+        const response = await axios.post(
+          `${configuration.flaskBaseUrl}/generate-comment/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
-        // setEmotions(response.data.emotions);
-        const emotions = response.data.emotions;
-        const suggest_review_arr =
-          reviews_on_emotions[emotions[emotions.length - 1]];
-        const suggest_review =
-          suggest_review_arr[Math.floor(Math.random() * 4)];
-        setCommentValue(suggest_review);
+
+        const suggested_comment = response.data.suggested_comment;
+        setCommentValue(suggested_comment);
         setStartGenerating(false);
         setEmotionLoading(false);
       } catch (error) {
@@ -138,7 +151,7 @@ const Post = ({
     if (commentToggle && startGenerating) {
       fetchData();
     }
-  }, [commentToggle, startGenerating]);
+  }, [commentToggle, startGenerating, postImage]);
 
   useEffect(() => {
     if (message) {

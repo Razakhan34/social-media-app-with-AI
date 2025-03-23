@@ -48,7 +48,7 @@ def generate_caption(image_path):
 
 import google.generativeai as genai # type: ignore
 
-def generate_caption_with_LLM_BARD(input_caption):
+def generate_caption_with_LLM_BARD(prompt):
   # Configure API key from Google AI Studio
   genai.configure(api_key=os.getenv('google_api_key_for_llm'))
   # for m in genai.list_models():
@@ -57,11 +57,11 @@ def generate_caption_with_LLM_BARD(input_caption):
   # Initialize Gemini Pro (Text Only)
   model = genai.GenerativeModel(model_name="gemini-1.5-flash")
   
-  # Create the prompt for Gemini
-  prompt = (
-      f"Write a creative and engaging social media caption based on the description: "
-      f"'{input_caption}'. The caption should be fun, catchy, and within two lines."
-  )
+#   # Create the prompt for Gemini
+#   prompt = (
+#       f"Write a creative and engaging social media caption based on the description: "
+#       f"'{input_caption}'. The caption should be fun, catchy, and within two lines."
+#   )
 
   # Generate content
   response = model.generate_content(prompt)
