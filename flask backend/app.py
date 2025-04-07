@@ -203,7 +203,7 @@ def send_message(receiver_id):
 
 from PIL import Image
 import io
-# @app.route('/generate-caption/upload', methods=['POST'])
+@app.route('/generate-caption/upload', methods=['POST'])
 def upload():
     if 'image' not in request.files:
         return jsonify({"error": "No image part in the request"}), 400
