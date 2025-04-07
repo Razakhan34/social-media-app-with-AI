@@ -72,6 +72,7 @@ const MainChat = () => {
             onCleanChatImageHandler={cleanChatImageHandler}
             onUploadChatImage={uploadChatImageHandler}
             emotionPermissionAllowed={emotionPermissionAllowed}
+            selectedUser={selectedConversation}
           />
         </>
       )}

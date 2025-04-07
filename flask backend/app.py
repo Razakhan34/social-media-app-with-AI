@@ -238,9 +238,7 @@ def upload():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-
+     
 # generating auto comment based on user emotion and current user background or scenario
 from comment_generator import generate_comment
 @app.route('/generate-comment/upload', methods=['POST'])
@@ -279,6 +277,49 @@ def generate_comment_llm():
     except Exception as e:
         print("Error saving image:", e)
         return jsonify({"error": str(e)}), 500
+    
+    
+@app.route('/motivational-message', methods=['POST'])
+def motivation_message():
+    try:
+        data = request.json
+        username = data.get('name', 'User')  # Default to "User" if not provided
+        emotion = data.get('emotion')
+
+        if not emotion:
+            return jsonify({"error": "Emotion not provided"}), 400
+        
+        # Define categories of emotions
+        positive_emotions = ["happy", "neutral", "surprise"]
+        negative_emotions = ["sad", "fear", "disgust", "angry"]
+
+
+        if emotion in positive_emotions:
+             prompt = (
+                f"{username} is feeling happy. Write a short, motivational message to encourage them to stay focused in life, "
+                f"keep smiling, and continue spreading positivity. Make it warm, uplifting, and thoughtful."
+            )
+        elif emotion in negative_emotions:
+            # Prompt to generate personalized motivational message
+            prompt = (
+                f"{username} is feeling {emotion}. Write a short, heartfelt motivational message to uplift them "
+                f"and boost their confidence. Make it inspiring and empathetic."
+            )
+        else:
+            prompt = (
+                f"{username} is feeling {emotion}. Write a thoughtful and kind message to acknowledge their state of mind "
+                f"and gently encourage positivity."
+            )
+       
+
+        # Generate the response
+        final_message = generate_caption_with_LLM_BARD(prompt)
+
+        return jsonify({"message": final_message}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+ 
 if __name__ == '__main__':
     # Use the port provided by Render or default to 8000 for local testing
     port = int(os.environ.get('PORT', 8000))

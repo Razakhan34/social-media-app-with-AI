@@ -15,7 +15,13 @@ const Contact = ({ conversation }) => {
   if (messages?.length > 0) {
     const message_data = messages[messages.length - 1];
     if (message_data?.message) {
-      lastMessage = messages[messages.length - 1].message;
+      const fullMessage = messages[messages.length - 1].message;
+      lastMessage =
+        fullMessage.length > 30
+          ? fullMessage.substring(0, 30) + "..."
+          : fullMessage;
+
+      // lastMessage = messages[messages.length - 1].message;
     } else if (message_data?.emotionImage || message_data?.images) {
       lastMessage = "📷 Image";
     } else {
