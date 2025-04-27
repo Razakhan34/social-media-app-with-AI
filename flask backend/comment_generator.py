@@ -35,7 +35,6 @@ def generate_comment(image_path):
    
     # Step 1: Detect the user's emotion from the image
     user_emotion = detect_emotion_of_current_user()
-    
         
      # Step 2: Analyze the image to generate a descriptive caption
     caption = generate_caption(image_path)

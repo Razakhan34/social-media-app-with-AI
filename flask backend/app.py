@@ -295,7 +295,7 @@ def motivation_message():
 
 
         if emotion in positive_emotions:
-             prompt = (
+            prompt = (
                 f"{username} is feeling happy. Write a short, motivational message to encourage them to stay focused in life, "
                 f"keep smiling, and continue spreading positivity. Make it warm, uplifting, and thoughtful."
             )
