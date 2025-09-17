@@ -1,5 +1,5 @@
 import { Avatar, Button, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -69,7 +69,7 @@ const UpdateProfile = () => {
     <div className="updateProfile">
       <form className="updateProfileForm" onSubmit={submitHandler}>
         <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Network Hub
+          Social-Hub
         </Typography>
 
         <Avatar

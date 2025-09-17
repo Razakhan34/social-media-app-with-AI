@@ -7,7 +7,6 @@ import {
   getAllUsers,
 } from "../../store/actions/userActions";
 import User from "../user/User";
-
 import "./Search.css";
 
 const Search = () => {
@@ -33,7 +32,7 @@ const Search = () => {
     <div className="search">
       <form className="searchForm" onSubmit={submitHandler}>
         <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Network Hub
+          Social-Hub
         </Typography>
 
         <input

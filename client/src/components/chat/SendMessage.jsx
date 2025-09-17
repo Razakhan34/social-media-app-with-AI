@@ -140,7 +140,7 @@ const SendMessage = ({
          
         {/* )} */}
         <div className="input-send-buttons-container">
-          {messages.length > 0 &&
+          {messages?.length > 0 &&
             user._id !== messages[messages.length - 1].senderId &&
             messages[messages.length - 1].emotionPrediction && (
               <Button

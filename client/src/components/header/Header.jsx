@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Home,
   HomeOutlined,
@@ -13,7 +13,7 @@ import TextsmsIcon from "@mui/icons-material/Textsms";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import "./Header.css";
 import { Link } from "react-router-dom";
-import HeaderLogo from "../../assets/networkhub.png";
+import AppLogo from "../../assets/social-hub.png";
 
 const Header = () => {
   const [tab, setTab] = useState(window.location.pathname);
@@ -21,10 +21,10 @@ const Header = () => {
     <div className="header">
       <div className="main-logo">
         <div>
-          <img src={HeaderLogo} alt="logo of the page" />
+          <img src={AppLogo} alt="logo of the page" />
         </div>
         <Link to="/" onClick={() => setTab("/")}>
-          <span>Social-hub</span>
+          <span>Social-Hub</span>
         </Link>
       </div>
       <Link to="/" onClick={() => setTab("/")}>

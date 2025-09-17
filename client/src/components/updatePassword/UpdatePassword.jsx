@@ -1,5 +1,5 @@
 import { Button, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -37,7 +37,7 @@ const UpdatePassword = () => {
     <div className="updatePassword">
       <form className="updatePasswordForm" onSubmit={submitHandler}>
         <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Network Hub
+          Social-Hub
         </Typography>
 
         <input
