@@ -5,6 +5,9 @@ from keras.models import load_model
 from keras.preprocessing.image import img_to_array
 import tensorflow
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import numpy as np
+from deepface import DeepFace
+from ultralytics import YOLO
 
 class PredictingEmotion:
   # Load the emotion detection model
@@ -67,40 +70,54 @@ class PredictingEmotion:
     cap.release()
     return results
   
-  def detect_emotions_from_image(self,image_path):
-    frame = cv2.imread(image_path)
+  # def detect_emotions_from_image(self,image_path):
+  #   frame = cv2.imread(image_path)
 
-    # Convert image to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+  #   # Convert image to grayscale
+  #   gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # Detect faces in the image
-    face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + '/haarcascade_frontalface_default.xml')
-    faces = face_classifier.detectMultiScale(gray, 1.3, 5)
+  #   # Detect faces in the image
+  #   face_classifier = cv2.CascadeClassifier(cv2.data.haarcascades + '/haarcascade_frontalface_default.xml')
+  #   faces = face_classifier.detectMultiScale(gray, 1.3, 5)
 
-    results = []
+  #   results = []
 
-    for (x, y, w, h) in faces:
-      roi_gray = gray[y:y+h, x:x+w]
-      roi_gray = cv2.resize(roi_gray, (48, 48), interpolation=cv2.INTER_AREA)
+  #   for (x, y, w, h) in faces:
+  #     roi_gray = gray[y:y+h, x:x+w]
+  #     roi_gray = cv2.resize(roi_gray, (48, 48), interpolation=cv2.INTER_AREA)
 
-      if np.sum([roi_gray]) != 0:
-          roi = roi_gray.astype('float') / 255.0
-          roi = img_to_array(roi)
-          roi = np.expand_dims(roi, axis=0)
+  #     if np.sum([roi_gray]) != 0:
+  #         roi = roi_gray.astype('float') / 255.0
+  #         roi = img_to_array(roi)
+  #         roi = np.expand_dims(roi, axis=0)
           
-          # Augment the image data
-          augmented_images = self.datagen.flow(roi, batch_size=1)
-          for aug_image in augmented_images:
-              # Make prediction
-              preds = self.classifier.predict(aug_image)[0]
-              print("Prediction",preds)
-              dominant_emotion = self.class_labels[preds.argmax()]
-              results.append(dominant_emotion)
-              break  # Only predict on the original and augmented image
+  #         # Augment the image data
+  #         augmented_images = self.datagen.flow(roi, batch_size=1)
+  #         for aug_image in augmented_images:
+  #             # Make prediction
+  #             preds = self.classifier.predict(aug_image)[0]
+  #             print("Prediction",preds)
+  #             dominant_emotion = self.class_labels[preds.argmax()]
+  #             results.append(dominant_emotion)
+  #             break  # Only predict on the original and augmented image
 
-          # # Make prediction
-          # preds = self.classifier.predict(roi)[0]
-          # print("Prediction",preds)
-          # dominant_emotion = self.class_labels[preds.argmax()]
-          # results.append(dominant_emotion)
-    return results
+  #         # # Make prediction
+  #         # preds = self.classifier.predict(roi)[0]
+  #         # print("Prediction",preds)
+  #         # dominant_emotion = self.class_labels[preds.argmax()]
+  #         # results.append(dominant_emotion)
+  #   return results
+  def detect_emotions_from_image(self,image_path):
+    result = DeepFace.analyze(image_path, enforce_detection=False, actions=['emotion'])
+    # Extract dominant emotion, probabilities, and gender
+    dominant_emotion = result[0]['dominant_emotion']
+    
+    # print(result[0])
+    if(dominant_emotion.lower() == 'neutral'):
+      return "Sad"
+    
+    # Print dominant emotion
+    print(f"Dominant Emotion: {dominant_emotion}")
+    return dominant_emotion
+    
+    

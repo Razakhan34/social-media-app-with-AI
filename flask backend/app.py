@@ -110,19 +110,34 @@ def handle_disconnect():
         del user_socket_map[disconnected_user_id]
              
 #defining API for sending the emotion and image to databse and cloudinary
+#Also adding Privacy for girl and for some person who is naked
 @app.route('/send_emotion_message/<receiver_id>', methods=['POST'])
 def send_message(receiver_id):
     try:
+        # return jsonify({'success': False, 'error': 'Privacy alert: Image capture not allowed for female users.'}), 500
+    
         senderId = request.json.get('senderId')
         # take images and Upload images to Cloudinary
-        cloudinary_response = detect_user_image()
+        # cloudinary_response = detect_user_image()
+        
+        
+        # Capture image and perform privacy checks
+        success, result = detect_user_image()
+        if not success:
+            return jsonify({'success': False, 'error': result}), 400  # Return error from detect_user_image
+
+        # At this point, result is the cloudinary_response
+        cloudinary_response = result
+        
+        print("Cloudinary response:", cloudinary_response)
+        
         results = emotion_predictor.detect_emotions_from_image('temp_image.jpg')
         print(results)
         if results:
-            emotion_predicted = results[0]
+            emotion_predicted = results
         else:
             # Handle the case where no emotions were detected
-            emotion_predicted = "sad"
+            emotion_predicted = "Sad"
         # Delete temporary image file
         os.remove('temp_image.jpg')
 
@@ -169,7 +184,6 @@ def send_message(receiver_id):
         new_message_json = json.dumps(new_message_result, cls=CustomJSONEncoder)
         
         new_message_json_for_emitting =  json.loads(json_util.dumps(new_message_result, cls=CustomJSONEncoder))
-        
         
         # socketio.emit('newMessage', new_message_json_for_emitting, room=receiver_id)
         receiver_socket_id = user_socket_map.get(receiver_id)
@@ -277,40 +291,38 @@ def generate_comment_llm():
     except Exception as e:
         print("Error saving image:", e)
         return jsonify({"error": str(e)}), 500
-    
-    
+
 @app.route('/motivational-message', methods=['POST'])
 def motivation_message():
     try:
         data = request.json
         username = data.get('name', 'User')  # Default to "User" if not provided
-        emotion = data.get('emotion')
+        emotion = data.get('emotion').lower()
 
         if not emotion:
             return jsonify({"error": "Emotion not provided"}), 400
         
         # Define categories of emotions
-        positive_emotions = ["happy", "neutral", "surprise"]
-        negative_emotions = ["sad", "fear", "disgust", "angry"]
+        positive_emotions = ["happy", "surprise"]
+        negative_emotions = ["sad","neutral", "fear", "disgust", "angry"]
 
 
         if emotion in positive_emotions:
             prompt = (
                 f"{username} is feeling happy. Write a short, motivational message to encourage them to stay focused in life, "
-                f"keep smiling, and continue spreading positivity. Make it warm, uplifting, and thoughtful."
+                f"keep smiling, and continue spreading positivity. Make it warm, uplifting, and thoughtful in short paragraph.."
             )
         elif emotion in negative_emotions:
             # Prompt to generate personalized motivational message
             prompt = (
                 f"{username} is feeling {emotion}. Write a short, heartfelt motivational message to uplift them "
-                f"and boost their confidence. Make it inspiring and empathetic."
+                f"and boost their confidence. Make it inspiring and empathetic in short paragraph."
             )
         else:
             prompt = (
                 f"{username} is feeling {emotion}. Write a thoughtful and kind message to acknowledge their state of mind "
-                f"and gently encourage positivity."
-            )
-       
+                f"and gently encourage positivity in short paragraph."
+            ) 
 
         # Generate the response
         final_message = generate_caption_with_LLM_BARD(prompt)
